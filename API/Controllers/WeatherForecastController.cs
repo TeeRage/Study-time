@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-
 namespace API.Controllers;
 
-[ApiController]
-[Route("[controller]")]
-public class WeatherForecastController : ControllerBase
-{
+
+[ApiController] //Class is ApiController type
+[Route("[controller]")] //Route how the user will get to the API controller via client
+public class WeatherForecastController : ControllerBase 
+{//Derived from controlbase
     private static readonly string[] Summaries = new[]
     {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot"
