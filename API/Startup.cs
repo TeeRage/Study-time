@@ -33,6 +33,7 @@ namespace API
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection")); //Address is in configuration files
             });
             services.AddControllers();
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
@@ -52,6 +53,9 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            //Allow api usage with any headers and methods if used from localhost 4200
+            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
 
             app.UseAuthorization();
 
