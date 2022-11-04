@@ -3,13 +3,12 @@ using System.Threading.Tasks; //Async calls
 using Microsoft.EntityFrameworkCore; //Async lists
 using API.Entities;
 using Microsoft.AspNetCore.Mvc; //For ControllerBase
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    //Derive this controller from BaseAPIController, and inherit ControllerBase from there
+    public class UsersController : BaseAPIController
     {
         private readonly DataContext _context;
         public UsersController(DataContext context)
@@ -19,12 +18,14 @@ namespace API.Controllers
 
         //Asynchronously get all users as a list using GetUsers() action //api/users/
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()//IEnumerable list
         {
             return await _context.Users.ToListAsync();
         }
 
         //Get one specific user using GetUser() action //api/users/{id}
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUser(int id)
         { 
