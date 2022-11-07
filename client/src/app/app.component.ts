@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { User } from './_models/user'; //User model
+import { AccountService } from './_services/account.service';
 
 //Decorator that gives normal classess some more extra powers (our class AppComponent is now an angular component)
 @Component({
@@ -13,18 +14,16 @@ export class AppComponent implements OnInit{
   users: any; //Users can be any type, type safety is "turned off"
 
   //inject http client with constructor
-  constructor(private http: HttpClient) {}
+  constructor(private accountService: AccountService) {}
 
-  //OnInitialize, get users
+  //OnInitialize, get list of users and set current logged in user
   ngOnInit() {
-    this.getUsers();
+    this.setCurrentUser();
   }
 
-  //Get users from local host api containing SQLite dummy data
-  getUsers(){
-    this.http.get('https://localhost:5001/api/users').subscribe({
-      next: response => this.users = response,
-      error: error => console.log(error)
-    })
+  //Get and set the user item saved to local storage when user logged in
+  setCurrentUser() {
+    const user : User = JSON.parse(localStorage.getItem('user')); //Uses user keyword set in account.service.ts
+    this.accountService.setCurrentUser(user);
   }
 }
