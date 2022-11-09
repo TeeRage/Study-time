@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { User } from '../_models/user';
 import { AccountService } from '../_services/account.service';
@@ -13,24 +15,24 @@ export class NavComponent implements OnInit {
   
   model: any = {} //two-way communication model, for user login 
 
-  //Use AccountService as injected service for login
-  constructor(public accountService: AccountService) { }
+  //Use AccountService and Angular Router as injected service for login
+  constructor(public accountService: AccountService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
   }
 
-  //two-way communication action, for user login on button onclick using form property (ngSubmit)="login()"
+  //Two-way communication action, for user login on button onclick using form property (ngSubmit)="login()"
   login() {
     this.accountService.login(this.model).subscribe(response => {
-      console.log("Login success");
-      console.log(response);
+      this.router.navigateByUrl('/members'); //Navigate to members list after login
     }, error => {
-      console.log("Login error");
       console.log(error);
+      this.toastr.error(error.error)
     });
   }
 
   logout() {
-    this.accountService.logout(); //use logout from AccountService
+    this.accountService.logout(); //Use logout from AccountService
+    this.router.navigateByUrl('/'); //Navigate to home page after logout
   }
 }
