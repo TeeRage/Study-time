@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using API.Extensions;
 
 // Class for users inside this app. Acts as a "schema" for database table via Entity framework.
 namespace API.Entities
@@ -23,5 +20,11 @@ namespace API.Entities
         public string City { get; set; }
         public string Country { get; set; }
         public ICollection<Photo> Photos { get; set; }
+
+        //public int GetAge() 
+        //{
+            //Use method from DateTimeExtensions to calculate current age
+        //    return DateOfBirth.CalculateAge();
+        //}
     }
 }

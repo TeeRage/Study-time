@@ -1,4 +1,5 @@
 using API.Data;
+using API.Helpers;
 using API.Interfaces;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,12 @@ namespace API.Extensions
         {
             //Add service for JWT token, lasts only htpp scope lifetime.
             services.AddScoped<ITokenService, TokenService>();
+
+            //Service for User repository
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            //Service for mapping users and photos together
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
             //Add service for database with SQLite, so that we can connect to the DB. 
             services.AddDbContext<DataContext>(options => 

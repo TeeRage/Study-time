@@ -4,32 +4,38 @@ using Microsoft.EntityFrameworkCore; //Async lists
 using API.Entities;
 using Microsoft.AspNetCore.Mvc; //For ControllerBase
 using Microsoft.AspNetCore.Authorization;
+using API.Interfaces;
+using API.DTOs;
+using AutoMapper;
 
 namespace API.Controllers
 {
     //Derive this controller from BaseAPIController, and inherit ControllerBase from there
+    [Authorize] //All methods now need authorization
     public class UsersController : BaseAPIController
     {
-        private readonly DataContext _context;
-        public UsersController(DataContext context)
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            _context = context;
+            _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         //Asynchronously get all users as a list using GetUsers() action //api/users/
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()//IEnumerable list
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()//as IEnumerable list
         {
-            return await _context.Users.ToListAsync();
+            var users = await _userRepository.GetMembersAsync();
+
+            return Ok(users);
         }
 
-        //Get one specific user using GetUser() action //api/users/{id}
-        [Authorize]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetUser(int id)
-        { 
-            return await _context.Users.FindAsync(id);
+        //Get one specific user using GetUser() action //api/users/{username}
+        [HttpGet("{username}")]
+        public async Task<ActionResult<MemberDto>> GetUser(string username)
+        {
+            return await _userRepository.GetMemberAsync(username);
         }
     }
 }
