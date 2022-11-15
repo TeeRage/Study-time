@@ -1,0 +1,48 @@
+/*animate card images on hover*/
+.card:hover img {
+    transform: scale(1.2, 1.2);
+    transition-duration: 500ms;
+    transition-timing-function: ease-out;
+    opacity: 0.7;
+}
+
+.card img {
+    transform: scale(1.0, 1.0);
+    transition-duration: 500ms;
+    transition-timing-function: ease-out;
+}
+
+/*prevent card image from overflowing on hover*/
+.card-img-wrapper {
+    overflow: hidden;
+    position: relative;
+}
+
+/*hide icons on card hover, and position them*/
+.member-icons {
+    position: absolute;
+    bottom: -30%;
+    left: 0;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+    opacity: 0;
+}
+
+/*show icons on card hover*/
+.card-img-wrapper:hover .member-icons {
+    bottom: 0;
+    opacity: 1;
+}
+
+/*animation for card buttons*/
+.animate {
+    transition: all 0.3s ease-in-out;
+}
+
+/*Added for making buttons fit into card, this is a temporary solution*/
+.btn-card {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+}
